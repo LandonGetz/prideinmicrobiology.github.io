@@ -2,18 +2,31 @@
 <html>
 {% include head.html %}
 
-    <body id="page-top" class="index">
-    {% include profiles_nav.html %}
+<body id="page-top" class="index" style="background-color: white;">
+  {% include blog_nav.html %}
 
-    <main class="container">   
-        <div style="padding-top:5%;">
-        {% include portfolio_grid.html %}  
-        </div>
-    </main>
+  <main>
+    {% include blog_header.html %}
 
-    {% include footer.html %}
-    {% include modals.html %}
-    {% include js.html %}
+    <div class="container" style="padding: 50px 10%; background-color: white;">
+      {% assign sorted_posts = site.posts | sort: "date" | reverse %}
+      {% for post in sorted_posts %}
+      <article style="margin-bottom: 40px;">
+        <h3 style="text-color: #5e81ac;"><a href="{{ post.url }}">{{ post.title }}</a></h3>
+        <p>
+          <strong>{{ post.date | date: "%B %d, %Y" }}</strong>
+          {% if post.categories.size > 0 %}
+            | <em>{{ post.categories | join: ", " }}</em>
+          {% endif %}
+        </p>
+        <p>{{ post.excerpt }}</p>
+        <hr>
+      </article>
+      {% endfor %}
+    </div>
+  </main>
 
-    </body>
+  {% include post_contact.html %}
+  {% include footer.html %}
+</body>
 </html>

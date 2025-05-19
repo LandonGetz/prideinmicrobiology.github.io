@@ -42,7 +42,11 @@ social:
   - title: twitter
     url: http://twitter.com/prideinmicro
 
+plugins:
+  - jekyll-paginate
 
+paginate: 5
+paginate_path: "/blog/page:num/"
 
 # Postal address (add as many lines as necessary)
 address:
@@ -57,6 +61,16 @@ credits: 'The Pride in Microbiology logo was designed by Karina Gisèle Mac Si H
 # Build settings
 markdown: kramdown
 permalink: pretty
+
+collections:
+  profiles:
+    output: true
+    permalink: /profiles/:name/
+    layout: posts
+  posts:
+    output: true
+    permalink: /Blog/:name/
+  
 
 #for posts
 defaults:
