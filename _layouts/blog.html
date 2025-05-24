@@ -2,31 +2,93 @@
 <html>
 {% include head.html %}
 
-<body id="page-top" class="index" style="background-color: white;">
+<body id="page-top" class="index blog" style="background-color: white;">
   {% include blog_nav.html %}
 
   <main>
     {% include blog_header.html %}
 
-    <div class="container" style="padding: 50px 10%; background-color: white;">
+    <!-- Category Filter Buttons -->
+    <div class="container" style="padding: 20px 8% 0 8%; background-color: white;">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <div class="category-filter">
+            <button class="category-btn active" data-category="all">All Posts ({{ site.posts.size }})</button>
+            {% assign all_categories = site.posts | map: 'categories' | join: ',' | split: ',' | uniq | sort %}
+            {% for category in all_categories %}
+              {% unless category == blank %}
+                {% assign category_posts = site.posts | where_exp: "post", "post.categories contains category" %}
+                <button class="category-btn" data-category="{{ category | strip }}">{{ category | strip }} ({{ category_posts.size }})</button>
+              {% endunless %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" style="padding: 20px 8% 40px 8%; background-color: white;">
       {% assign sorted_posts = site.posts | sort: "date" | reverse %}
       {% for post in sorted_posts %}
-      <article style="margin-bottom: 40px;">
-        <h3 style="text-color: #5e81ac;"><a href="{{ post.url }}">{{ post.title }}</a></h3>
-        <p>
-          <strong>{{ post.date | date: "%B %d, %Y" }}</strong>
-          {% if post.categories.size > 0 %}
-            | <em>{{ post.categories | join: ", " }}</em>
+      <article class="blog-post" style="margin-bottom: 40px;" data-categories="{{ post.categories | join: ',' }}">
+        <div class="blog-post-container">
+          {% if post.img %}
+          <div class="blog-post-image">
+            <img src="{{ '/img/posts/' | append: post.img | prepend: site.baseurl }}" alt="{{ post.alt | default: post.title }}" />
+          </div>
           {% endif %}
-        </p>
-        <p>{{ post.excerpt }}</p>
+          <div class="blog-post-content">
+            <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+            <p style="color: black;">
+              <strong>{{ post.date | date: "%B %d, %Y" }}</strong>
+              {% if post.categories.size > 0 %}
+                | <em>{{ post.categories | join: ", " }}</em>
+              {% endif %}
+            </p>
+            <div class="blog-post-excerpt">{{ post.excerpt }}</div>
+          </div>
+        </div>
         <hr>
       </article>
       {% endfor %}
     </div>
   </main>
-
-  {% include post_contact.html %}
+  
   {% include footer.html %}
+
+  <!-- Category Filter JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const categoryBtns = document.querySelectorAll('.category-btn');
+      const blogPosts = document.querySelectorAll('.blog-post');
+
+      categoryBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const selectedCategory = this.getAttribute('data-category');
+          
+          // Update active button
+          categoryBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Filter posts
+          blogPosts.forEach(post => {
+            const postCategories = post.getAttribute('data-categories');
+            
+            if (selectedCategory === 'all' || postCategories.includes(selectedCategory)) {
+              post.style.display = 'block';
+              post.style.opacity = '0';
+              setTimeout(() => {
+                post.style.opacity = '1';
+              }, 50);
+            } else {
+              post.style.opacity = '0';
+              setTimeout(() => {
+                post.style.display = 'none';
+              }, 300);
+            }
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>

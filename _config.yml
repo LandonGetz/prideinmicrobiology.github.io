@@ -41,6 +41,13 @@ footer:
 social:
   - title: twitter
     url: http://twitter.com/prideinmicro
+  - title: bluesky
+    url: https://bsky.app/profile/did:plc:sv5xn42ec56o6hhwuvdkbgdr
+    icon: fab fa-bluesky
+  - title: linkedin
+    url: https://www.linkedin.com/company/104999351
+  - title: instagram
+    url: https://www.instagram.com/prideinmicro
 
 plugins:
   - jekyll-paginate
@@ -56,7 +63,7 @@ address:
 
 # Credits content
 
-credits: 'The Pride in Microbiology logo was designed by Karina Gisèle Mac Si Hone. This website is based on the Freelancer theme, a free to use, open source Bootstrap theme created by <a href="http://startbootstrap.com">Start Bootstrap</a>.'
+credits: 'The Pride in Microbiology logo was designed by Karina Gisèle Mac Si Hone. This website is based on the Freelancer theme, a free to use, open source Bootstrap theme created by <a href="http://startbootstrap.com" style="color: white;">Start Bootstrap</a>.'
 
 # Build settings
 markdown: kramdown

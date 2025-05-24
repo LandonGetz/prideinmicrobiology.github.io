@@ -1,0 +1,49 @@
+---
+layout: post
+title: "Build It and They Will Come: Founding the Pride in Microbiology Network"
+author: Landon J. Getz
+affiliation: Department of Biochemistry, Faculty of Medicine University of Toronto
+date: 2025-05-24
+img: BuildIt_2025_05_20.png
+alt: "A petri plate with the progress pride flag represented as different looking bacterial and fungal colonies, being held by a hand wearing a purple glove. This is the logo for Pride in Microbiology"
+categories: [PiM]
+---
+
+In late 2022, I found myself I found myself reflecting on the experience of being a gay person navigating the world of microbiology. The most significant impacts of COVID-19 were in the rear-view mirror, I had moved to a new city and started a new job, and I was feeling isolated. Despite the collaborative nature of my scientific work, I was wishing for more visible community and spaces to bring my whole self to discussions without feeling the need to self-censor or be someone else.
+
+In June 2023, this reflection led to action. Together with my friends, colleagues, and fellow microbiologists, Edel Pérez-López and Bruno Francesco Rodrigues de Oliveira, we co-founded the Pride in Microbiology Network with the help of the editors at Nature Microbiology. Our goal was simple yet extremely impactful: to create a community where 2SLGBTQIA+ microbiologists could find solidarity, mentorship, and a sense of belonging. 
+We started with modest tools: A Discord server for real-time conversations, a mailing list for updates, and a website to highlight our work (and what we hoped to bring to the table). These platforms quickly became the foundation of a growing community that transcended geographical boundaries and brought together individuals from diverse backgrounds. Our community has nearly 300 individual members involved from around the globe.
+
+Since our inception, we have written several blog posts, launched PiM Connections, a mentorship program linking early-career 2SLGBTQIA+ microbiologists with each other, planned and executed a research symposium for LGBTQIA+ STEM Day, and collaborated with Nature Microbiology to support their Amplifying Diverse Voices Journal Club program. Through Nature Microbiology's Journal Club, Pride in Microbiology has connected a number of young microbiologists with senior ones, providing them an opportunity to share important work done by Queer and Trans microbiologists.
+
+Some examples:
+
+{% include link.html
+  title="Microbes produce biofilms to support their communities in nutrient-limited environments | Nature Microbiology"
+  description="Nature Microbiology - Microbes produce biofilms to support their communities in nutrient-limited environments"
+  link="https://www.nature.com/articles/s41564-024-01743-5"
+%}
+
+{% include link.html
+  title="Culturing enigmatic marine bacteria | Nature Microbiology"
+  description="Nature Microbiology - Culturing enigmatic marine bacteria"
+  link="https://www.nature.com/articles/s41564-023-01567-9"
+%}
+
+{% include link.html
+  title="Microbiome association with coral growth and survival | Nature Microbiology"
+  description="Nature Microbiology - Microbiome association with coral growth and survival"
+  link="https://www.nature.com/articles/s41564-025-02007-6"
+%}
+
+{% include link.html
+  title="Uncovering the HPV types causing cervical cancer | Nature Microbiology"
+  description="Nature Microbiology - Uncovering the HPV types causing cervical cancer"
+  link="https://www.nature.com/articles/s41564-024-01835-2"
+%}
+
+It is extremely encouraging to see the progress we've made and the in-roads we've built in the world of microbiology. What began as a longing for connection and Queer space in microbiology has blossomed into a vibrant network championing inclusivity and celebrating diversity in microbiology. We hope to continue building this network for all Queer and Trans microbiologists and continue expanding our connections across the globe.
+
+As we look forward, our commitment remains strong: to continue nurturing a supportive community where 2SLGBTQIA+ microbiologists can thrive. We warmly invite all who share this vision to join us in building a more inclusive and equitable scientific landscape.
+
+Want to join the network? You can sign up for our email list on the [homepage of this site]({{ site.url }}), or sign up through Discord [HERE](https://discord.gg/JEk9XTe4qM).
