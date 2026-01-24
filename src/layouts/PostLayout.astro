@@ -1,0 +1,62 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Nav from '@components/Nav.astro';
+import Footer from '@components/Footer.astro';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    author: string;
+    affiliation: string;
+    date: Date;
+    img?: string;
+    alt?: string;
+  };
+}
+
+const { frontmatter } = Astro.props;
+const formattedDate = frontmatter.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={frontmatter.title}>
+  <Nav variant="post" />
+
+  <header class="bg-white dark:bg-gray-900 pt-24 pb-8">
+    <div class="max-w-4xl mx-auto px-4">
+      <h1 class="text-3xl md:text-4xl font-heading font-bold text-secondary mb-4">
+        {frontmatter.title}
+      </h1>
+      <p class="text-xl text-gray-800 dark:text-gray-200">
+        <strong>By:</strong> {frontmatter.author}
+      </p>
+      <p class="text-gray-600 dark:text-gray-400">
+        <strong>Affiliation:</strong> {frontmatter.affiliation}
+      </p>
+      <p class="text-gray-600 dark:text-gray-400">
+        <strong>Date:</strong> {formattedDate}
+      </p>
+    </div>
+  </header>
+
+  <main class="bg-white dark:bg-gray-900 pb-16">
+    <div class="max-w-4xl mx-auto px-4">
+      {frontmatter.img && (
+        <img
+          src={`/img/posts/${frontmatter.img}`}
+          alt={frontmatter.alt || frontmatter.title}
+          class="w-full rounded-lg shadow-md mb-10"
+        />
+      )}
+
+      <article class="prose prose-lg dark:prose-invert max-w-none
+                       prose-headings:font-heading prose-headings:text-secondary
+                       prose-a:text-secondary-light prose-a:font-bold hover:prose-a:underline">
+        <slot />
+      </article>
+
+      <hr class="mt-12 border-gray-200 dark:border-gray-700" />
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
