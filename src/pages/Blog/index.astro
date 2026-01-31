@@ -1,0 +1,55 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Nav from '@components/Nav.astro';
+import BlogHeader from '@components/BlogHeader.astro';
+import CategoryFilter from '@components/CategoryFilter.astro';
+import BlogPostCard from '@components/BlogPostCard.astro';
+import Footer from '@components/Footer.astro';
+import SearchBar from '@components/SearchBar.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('posts');
+const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Build category list with counts
+const categoryMap = new Map<string, number>();
+posts.forEach(post => {
+  post.data.categories.forEach(cat => {
+    categoryMap.set(cat, (categoryMap.get(cat) || 0) + 1);
+  });
+});
+const categories = Array.from(categoryMap.entries())
+  .map(([name, count]) => ({ name, count }))
+  .sort((a, b) => a.name.localeCompare(b.name));
+---
+
+<BaseLayout title="Community Voices Blog">
+  <Nav variant="blog" />
+  <BlogHeader />
+
+  <main class="bg-white dark:bg-gray-900 py-8">
+    <div class="max-w-4xl mx-auto px-4">
+      <SearchBar />
+      <CategoryFilter categories={categories} totalPosts={posts.length} />
+
+      <div class="space-y-8">
+        {sortedPosts.map((post) => {
+          const slug = post.data.slug || post.slug;
+          return (
+            <BlogPostCard
+              title={post.data.title}
+              date={post.data.date}
+              categories={post.data.categories}
+              img={post.data.img}
+              alt={post.data.alt}
+              excerpt={post.body?.slice(0, 200) + '...'}
+              url={`/Blog/${slug}/`}
+            />
+          );
+        })}
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

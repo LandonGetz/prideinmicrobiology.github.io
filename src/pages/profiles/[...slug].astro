@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import ProfileLayout from '@layouts/ProfileLayout.astro';
+
+export async function getStaticPaths() {
+  const profiles = await getCollection('profiles');
+  return profiles.map((profile) => ({
+    params: { slug: profile.data.slug || profile.slug },
+    props: { profile },
+  }));
+}
+
+const { profile } = Astro.props;
+const { Content } = await profile.render();
+---
+
+<ProfileLayout frontmatter={profile.data}>
+  <Content />
+</ProfileLayout>

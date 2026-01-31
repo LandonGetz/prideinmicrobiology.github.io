@@ -1,0 +1,81 @@
+---
+import { siteConfig } from '@lib/config';
+---
+
+<footer class="text-center text-white">
+  <div class="bg-gradient-to-b from-secondary to-secondary-dark py-14">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <!-- Location / Co-Founders -->
+        <div>
+          <h3 class="font-heading font-bold text-lg mb-4">{siteConfig.footer.location}</h3>
+          {siteConfig.address.map((line) => (
+            <p class="text-white/80">{line}</p>
+          ))}
+        </div>
+
+        <!-- Social Links -->
+        <div>
+          <h3 class="font-heading font-bold text-lg mb-4">{siteConfig.footer.social}</h3>
+          <ul class="flex justify-center gap-3">
+            {siteConfig.social.map((network) => (
+              <li>
+                <a href={network.url} class="btn-outline-social" target="_blank" rel="noopener noreferrer" aria-label={network.title}>
+                  {network.icon === 'bluesky' ? (
+                    <img src="/img/bluesky-logo.svg" alt="Bluesky" class="w-5 h-5 brightness-0 invert" />
+                  ) : (
+                    <i class={network.icon}></i>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Credits -->
+        <div>
+          <h3 class="font-heading font-bold text-lg mb-4">{siteConfig.footer.credits}</h3>
+          <p class="text-white/80 text-sm" set:html={siteConfig.credits} />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-secondary-900 py-4">
+    <p class="text-white/60 text-sm">
+      Copyright &copy; {siteConfig.footer.copyright} {new Date().getFullYear()}
+    </p>
+  </div>
+</footer>
+
+<!-- Scroll to Top Button -->
+<button
+  id="scroll-top"
+  class="fixed bottom-6 right-6 w-11 h-11 rounded-full shadow-lg
+         flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300
+         bg-gradient-to-r from-secondary to-accent-warm text-white
+         hover:scale-110 hover:shadow-xl z-40"
+  aria-label="Scroll to top"
+>
+  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+  </svg>
+</button>
+
+<script>
+  const scrollBtn = document.getElementById('scroll-top');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollBtn?.classList.remove('opacity-0', 'pointer-events-none');
+      scrollBtn?.classList.add('opacity-100');
+    } else {
+      scrollBtn?.classList.add('opacity-0', 'pointer-events-none');
+      scrollBtn?.classList.remove('opacity-100');
+    }
+  });
+
+  scrollBtn?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>

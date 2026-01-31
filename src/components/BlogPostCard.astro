@@ -1,0 +1,52 @@
+---
+interface Props {
+  title: string;
+  date: Date;
+  categories: string[];
+  img?: string;
+  alt?: string;
+  excerpt: string;
+  url: string;
+}
+
+const { title, date, categories, img, alt, excerpt, url } = Astro.props;
+const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<article
+  class="blog-post group rounded-xl bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10
+         shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+  data-categories={categories.join(',')}
+>
+  <a href={url} class="flex flex-col sm:flex-row gap-0 sm:gap-0">
+    {img && (
+      <div class="flex-shrink-0 sm:w-52 overflow-hidden">
+        <img
+          src={`/img/posts/${img}`}
+          alt={alt || title}
+          class="w-full h-44 sm:h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      </div>
+    )}
+    <div class="flex-1 min-w-0 p-5">
+      <h3 class="text-xl font-heading font-bold mb-2 text-gray-900 dark:text-white group-hover:text-secondary transition-colors">
+        {title}
+      </h3>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">
+        <strong>{formattedDate}</strong>
+        {categories.length > 0 && (
+          <span class="ml-2">
+            {categories.map((cat) => (
+              <span class="inline-block text-xs font-heading font-semibold text-secondary bg-secondary/10 px-2 py-0.5 rounded-full ml-1">
+                {cat}
+              </span>
+            ))}
+          </span>
+        )}
+      </p>
+      <div class="text-gray-600 dark:text-gray-300 text-base line-clamp-3">
+        <Fragment set:html={excerpt} />
+      </div>
+    </div>
+  </a>
+</article>

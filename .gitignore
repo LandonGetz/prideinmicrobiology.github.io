@@ -1,8 +1,20 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# astro
+.astro/
+
+# environment
+.env
+.env.*
+
+# OS
 .DS_Store
+Thumbs.db
 
-_site
-.sass-cache
-.jekyll-cache
-.jekyll-metadata
-
-Gemfile.lock
+# IDE
+.vscode/
+.idea/
