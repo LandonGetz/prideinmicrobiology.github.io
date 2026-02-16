@@ -1,7 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 
-const profiles = await getCollection('profiles');
+const now = new Date();
+const profiles = (await getCollection('profiles')).filter(p => p.data.date <= now);
 const sortedProfiles = profiles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 

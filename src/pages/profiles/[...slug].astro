@@ -3,7 +3,8 @@ import { getCollection } from 'astro:content';
 import ProfileLayout from '@layouts/ProfileLayout.astro';
 
 export async function getStaticPaths() {
-  const profiles = await getCollection('profiles');
+  const now = new Date();
+  const profiles = (await getCollection('profiles')).filter(p => p.data.date <= now);
   return profiles.map((profile) => ({
     params: { slug: profile.data.slug || profile.slug },
     props: { profile },
