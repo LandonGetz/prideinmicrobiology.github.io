@@ -25,7 +25,7 @@ const profilesCollection = defineCollection({
     'degree-held': z.string(),
     position: z.string(),
     pronouns: z.string(),
-    identity: z.string(),
+    identity: z.string().nullable().optional(),
     slug: z.string().optional(),
   }),
 });
