@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 
 const profiles = await getCollection('profiles');
-const sortedProfiles = profiles.sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+const sortedProfiles = profiles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
 <section id="portfolio" class="py-20 bg-white dark:bg-gray-900">
