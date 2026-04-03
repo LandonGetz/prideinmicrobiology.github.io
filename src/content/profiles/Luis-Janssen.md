@@ -1,7 +1,7 @@
 ---
 title: Dr. Luis(a) Janssen, PhD
 date: 2026-04-01
-img: LuisJanseen.png
+img: LuisJanssen.png
 alt: "Profile photo of Dr. Luis Janssen"
 profile-name: Dr. Luis(a) Janssenm, PhD
 degree-held: PhD in Molecular Biology, University of Brasilia
