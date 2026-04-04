@@ -1,5 +1,5 @@
 ---
-title: Dr. Landon J. Getz
+title: Dr. Landon J. Getz, PhD
 date: 2023-09-21
 img: LandonGetz.png
 alt: "Profile photo of Dr. Landon J. Getz"

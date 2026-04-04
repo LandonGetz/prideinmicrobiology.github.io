@@ -1,5 +1,5 @@
 ---
-title: Dr. Edel Pérez-López
+title: Dr. Edel Pérez-López, PhD
 date: 2024-09-23
 img: EPL.png
 alt: "Profile photo of Dr. Edel Pérez-López"

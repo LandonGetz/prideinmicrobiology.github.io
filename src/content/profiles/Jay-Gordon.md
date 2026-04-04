@@ -1,7 +1,7 @@
 ---
 title: Dr. Jay Gordon, PhD
 date: 2026-04-02
-img: Jay-Gordon.png
+img: Jay-Gordon.jpg
 alt: "Profile photo of Dr. Jay Gordon"
 profile-name: Dr. Jay Gordon, PhD
 degree-held: Doctor of Philosophy, University of Toronto

@@ -1,5 +1,5 @@
 ---
-title: Dr. Joseph Rouse
+title: Dr. Joseph Rouse, PhD
 date: 2026-02-15
 img: JoeRouse.png
 alt: "Profile photo of Dr. Joseph Rouse"
