@@ -1,0 +1,27 @@
+---
+import { siteConfig } from '@lib/config';
+---
+
+<header class="relative gradient-purple text-white py-24 pt-32 overflow-hidden">
+  <!-- Decorative background blobs -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-accent-pink/20 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-secondary-light/20 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="relative max-w-4xl mx-auto px-4 text-center">
+    <div data-animate>
+      <img
+        src="/img/logo.png"
+        alt="Pride in Microbiology Logo: a purple glove holding a round petri plate, within the petri plate are different bacterial growth which are arranged in colour and style to match the progress pride flag."
+        class="mx-auto w-1/2 max-w-sm mb-10 drop-shadow-2xl"
+      />
+    </div>
+    <h1 data-animate data-delay="150" class="text-5xl md:text-6xl font-heading font-extrabold uppercase tracking-wider mb-5">
+      {siteConfig.title}
+    </h1>
+    <h3 data-animate data-delay="300" class="text-xl md:text-2xl font-heading font-light text-white/80 tracking-wide">
+      {siteConfig.skills}
+    </h3>
+  </div>
+</header>

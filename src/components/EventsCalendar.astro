@@ -1,0 +1,376 @@
+---
+import { fetchCalendarEvents, type CalendarEvent } from '@lib/calendar';
+
+const allEvents = await fetchCalendarEvents();
+const now = new Date();
+
+// Upcoming important dates (future only)
+const importantDates = allEvents
+  .filter((e) => e.isImportant && new Date(e.start) >= now)
+  .slice(0, 5);
+
+// Upcoming coffee hours (future only)
+const coffeeHours = allEvents
+  .filter((e) => e.isCoffeeHour && new Date(e.start) >= now)
+  .slice(0, 3);
+
+// All upcoming events for the calendar grid
+const upcomingEvents = allEvents.filter((e) => new Date(e.start) >= new Date(now.getFullYear(), now.getMonth(), 1));
+
+const configured = !!(import.meta.env.GOOGLE_CALENDAR_API_KEY && import.meta.env.GOOGLE_CALENDAR_ID);
+---
+
+<section id="events" class="py-20 bg-white dark:bg-gray-900">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 data-animate class="text-3xl md:text-4xl font-heading font-bold text-center text-black dark:text-white mb-12">
+      Events & Important Dates
+    </h2>
+
+    {!configured ? (
+      <div data-animate class="max-w-2xl mx-auto glass rounded-2xl p-8 shadow-lg text-center">
+        <p class="text-gray-600 dark:text-gray-300">
+          <i class="fas fa-calendar-alt text-secondary text-2xl mb-3 block"></i>
+          Calendar coming soon! Check back for upcoming events.
+        </p>
+      </div>
+    ) : (
+      <div class="space-y-8">
+        {/* Top row: Important Dates + Coffee Hours */}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Important Dates Panel */}
+          <div data-animate>
+            <div class="glass rounded-2xl p-6 shadow-lg h-full">
+              <h3 class="font-heading font-bold text-lg text-secondary mb-4 flex items-center gap-2">
+                <i class="fas fa-star text-accent-pink"></i>
+                Important Dates
+              </h3>
+              {importantDates.length > 0 ? (
+                <ul class="space-y-4">
+                  {importantDates.map((event) => {
+                    const date = new Date(event.start);
+                    const isAllDay = event.start.length === 10;
+                    return (
+                      <li class="flex gap-3 group">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-secondary/10 dark:bg-secondary/20 flex flex-col items-center justify-center">
+                          <span class="text-xs font-heading font-bold text-secondary uppercase leading-none">
+                            {date.toLocaleDateString('en-US', { month: 'short' })}
+                          </span>
+                          <span class="text-lg font-heading font-bold text-secondary leading-none">
+                            {date.getDate()}
+                          </span>
+                        </div>
+                        <div class="min-w-0">
+                          <p class="font-heading font-semibold text-gray-900 dark:text-white text-sm truncate">
+                            {event.title}
+                          </p>
+                          <p class="text-xs text-gray-500 dark:text-gray-400">
+                            {isAllDay
+                              ? 'All day'
+                              : date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                          </p>
+                          {event.location && (
+                            <p class="text-xs text-gray-400 dark:text-gray-500 truncate">
+                              <i class="fas fa-map-marker-alt mr-1"></i>{event.location}
+                            </p>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <p class="text-sm text-gray-500 dark:text-gray-400 italic">
+                  No upcoming important dates.
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Coffee Hours Panel */}
+          <div data-animate data-delay="150">
+            <div class="glass rounded-2xl p-6 shadow-lg h-full">
+              <h3 class="font-heading font-bold text-lg text-secondary mb-4 flex items-center gap-2">
+                <i class="fas fa-mug-hot text-accent-warm"></i>
+                Coffee Hours
+              </h3>
+              {coffeeHours.length > 0 ? (
+                <ul class="space-y-4">
+                  {coffeeHours.map((event) => {
+                    const date = new Date(event.start);
+                    const isAllDay = event.start.length === 10;
+                    return (
+                      <li class="flex gap-3 group">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-accent-warm/10 dark:bg-accent-warm/20 flex flex-col items-center justify-center">
+                          <span class="text-xs font-heading font-bold text-accent-warm uppercase leading-none">
+                            {date.toLocaleDateString('en-US', { month: 'short' })}
+                          </span>
+                          <span class="text-lg font-heading font-bold text-accent-warm leading-none">
+                            {date.getDate()}
+                          </span>
+                        </div>
+                        <div class="min-w-0">
+                          <p class="font-heading font-semibold text-gray-900 dark:text-white text-sm truncate">
+                            {event.title || 'Coffee Hour'}
+                          </p>
+                          <p class="text-xs text-gray-500 dark:text-gray-400">
+                            {isAllDay
+                              ? 'All day'
+                              : date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                          </p>
+                          {event.location && (
+                            <p class="text-xs text-gray-400 dark:text-gray-500 truncate">
+                              <i class="fas fa-map-marker-alt mr-1"></i>{event.location}
+                            </p>
+                          )}
+                          {event.description && (
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+                              {event.description}
+                            </p>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <p class="text-sm text-gray-500 dark:text-gray-400 italic">
+                  No upcoming coffee hours scheduled.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Calendar Grid - full width below */}
+        <div data-animate data-delay="300">
+          <div class="glass rounded-2xl p-6 shadow-lg">
+            {/* Calendar Header */}
+            <div class="flex items-center justify-between mb-4">
+              <button id="cal-prev" class="p-2 rounded-lg hover:bg-secondary/10 dark:hover:bg-secondary/20 transition-colors" aria-label="Previous month">
+                <i class="fas fa-chevron-left text-secondary"></i>
+              </button>
+              <h3 id="cal-month-label" class="font-heading font-bold text-lg text-gray-900 dark:text-white"></h3>
+              <button id="cal-next" class="p-2 rounded-lg hover:bg-secondary/10 dark:hover:bg-secondary/20 transition-colors" aria-label="Next month">
+                <i class="fas fa-chevron-right text-secondary"></i>
+              </button>
+            </div>
+
+            {/* Day labels */}
+            <div class="grid grid-cols-7 mb-2">
+              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+                <div class="text-center text-xs font-heading font-semibold text-gray-400 dark:text-gray-500 py-1">
+                  {day}
+                </div>
+              ))}
+            </div>
+
+            {/* Calendar days - rendered by JS */}
+            <div id="cal-grid" class="grid grid-cols-7 gap-1"></div>
+
+            {/* Legend */}
+            <div class="flex items-center gap-4 mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">Event</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-accent-pink"></span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">Important</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-accent-warm"></span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">Coffee Hour</span>
+              </div>
+            </div>
+
+            {/* Event detail popover */}
+            <div id="cal-events-detail" class="mt-4 hidden">
+              <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                <h4 id="cal-detail-date" class="font-heading font-semibold text-sm text-secondary mb-2"></h4>
+                <ul id="cal-detail-list" class="space-y-2"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+</section>
+
+{configured && (
+  <script is:inline define:vars={{ events: upcomingEvents }}>
+    (function () {
+      var calEvents = events;
+      var grid = document.getElementById('cal-grid');
+      var label = document.getElementById('cal-month-label');
+      var prevBtn = document.getElementById('cal-prev');
+      var nextBtn = document.getElementById('cal-next');
+      var detailPanel = document.getElementById('cal-events-detail');
+      var detailDate = document.getElementById('cal-detail-date');
+      var detailList = document.getElementById('cal-detail-list');
+
+      var today = new Date();
+      var currentYear = today.getFullYear();
+      var currentMonth = today.getMonth();
+
+      function getEventsForDate(year, month, day) {
+        var dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+        return calEvents.filter(function (e) {
+          var startDate = e.start.slice(0, 10);
+          var endDate = e.end.slice(0, 10);
+          return (startDate <= dateStr && dateStr < endDate) || startDate === dateStr;
+        });
+      }
+
+      function getDotColor(dayEvents, isToday) {
+        var hasImportant = dayEvents.some(function (e) { return e.isImportant; });
+        var hasCoffee = dayEvents.some(function (e) { return e.isCoffeeHour; });
+        if (hasImportant) return 'bg-accent-pink';
+        if (hasCoffee) return 'bg-accent-warm';
+        return isToday ? 'bg-white' : 'bg-secondary';
+      }
+
+      function renderMonth(year, month) {
+        var months = ['January', 'February', 'March', 'April', 'May', 'June',
+          'July', 'August', 'September', 'October', 'November', 'December'];
+        label.textContent = months[month] + ' ' + year;
+
+        var firstDay = new Date(year, month, 1).getDay();
+        var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        grid.innerHTML = '';
+        detailPanel.classList.add('hidden');
+
+        // Empty cells before first day
+        for (var i = 0; i < firstDay; i++) {
+          var empty = document.createElement('div');
+          empty.className = 'h-10';
+          grid.appendChild(empty);
+        }
+
+        // Day cells
+        for (var d = 1; d <= daysInMonth; d++) {
+          var dayEvents = getEventsForDate(year, month, d);
+          var cell = document.createElement('button');
+          var isToday = (d === today.getDate() && month === today.getMonth() && year === today.getFullYear());
+
+          cell.className = 'h-10 rounded-lg flex flex-col items-center justify-center text-sm transition-colors relative cursor-pointer ' +
+            (isToday ? 'bg-secondary text-white font-bold ' : 'text-gray-700 dark:text-gray-300 hover:bg-secondary/10 dark:hover:bg-secondary/20 ') +
+            (dayEvents.length > 0 ? 'font-semibold' : '');
+
+          cell.textContent = String(d);
+
+          if (dayEvents.length > 0) {
+            // Show colored dots for event types
+            var hasImportant = dayEvents.some(function (e) { return e.isImportant; });
+            var hasCoffee = dayEvents.some(function (e) { return e.isCoffeeHour; });
+            var hasRegular = dayEvents.some(function (e) { return !e.isImportant && !e.isCoffeeHour; });
+
+            var dotContainer = document.createElement('span');
+            dotContainer.className = 'absolute bottom-0.5 flex gap-0.5';
+
+            if (hasImportant) {
+              var d1 = document.createElement('span');
+              d1.className = 'w-1.5 h-1.5 rounded-full bg-accent-pink';
+              dotContainer.appendChild(d1);
+            }
+            if (hasCoffee) {
+              var d2 = document.createElement('span');
+              d2.className = 'w-1.5 h-1.5 rounded-full bg-accent-warm';
+              dotContainer.appendChild(d2);
+            }
+            if (hasRegular) {
+              var d3 = document.createElement('span');
+              d3.className = 'w-1.5 h-1.5 rounded-full ' + (isToday ? 'bg-white' : 'bg-secondary');
+              dotContainer.appendChild(d3);
+            }
+
+            cell.appendChild(dotContainer);
+          }
+
+          (function (events, day) {
+            cell.addEventListener('click', function () {
+              showDayEvents(events, year, month, day);
+            });
+          })(dayEvents, d);
+
+          grid.appendChild(cell);
+        }
+      }
+
+      function showDayEvents(dayEvents, year, month, day) {
+        var date = new Date(year, month, day);
+        detailDate.textContent = date.toLocaleDateString('en-US', {
+          weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+        });
+        detailList.innerHTML = '';
+
+        if (dayEvents.length === 0) {
+          var li = document.createElement('li');
+          li.className = 'text-sm text-gray-500 dark:text-gray-400 italic';
+          li.textContent = 'No events scheduled.';
+          detailList.appendChild(li);
+          detailPanel.classList.remove('hidden');
+          return;
+        }
+
+        dayEvents.forEach(function (event) {
+          var li = document.createElement('li');
+          li.className = 'flex items-start gap-2';
+
+          var dot = document.createElement('span');
+          var dotClass = 'bg-secondary';
+          if (event.isImportant) dotClass = 'bg-accent-pink';
+          if (event.isCoffeeHour) dotClass = 'bg-accent-warm';
+          dot.className = 'mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ' + dotClass;
+
+          var content = document.createElement('div');
+          var titleEl = document.createElement('p');
+          titleEl.className = 'text-sm font-semibold text-gray-900 dark:text-white';
+          var prefix = '';
+          if (event.isImportant) prefix = '\u2605 ';
+          if (event.isCoffeeHour) prefix = '\u2615 ';
+          titleEl.textContent = prefix + event.title;
+          content.appendChild(titleEl);
+
+          var isAllDay = event.start.length === 10;
+          if (!isAllDay) {
+            var timeEl = document.createElement('p');
+            timeEl.className = 'text-xs text-gray-500 dark:text-gray-400';
+            timeEl.textContent = new Date(event.start).toLocaleTimeString('en-US', {
+              hour: 'numeric', minute: '2-digit'
+            });
+            content.appendChild(timeEl);
+          }
+
+          if (event.location) {
+            var locEl = document.createElement('p');
+            locEl.className = 'text-xs text-gray-400 dark:text-gray-500';
+            locEl.textContent = event.location;
+            content.appendChild(locEl);
+          }
+
+          li.appendChild(dot);
+          li.appendChild(content);
+          detailList.appendChild(li);
+        });
+
+        detailPanel.classList.remove('hidden');
+      }
+
+      prevBtn.addEventListener('click', function () {
+        currentMonth--;
+        if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+        renderMonth(currentYear, currentMonth);
+      });
+
+      nextBtn.addEventListener('click', function () {
+        currentMonth++;
+        if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+        renderMonth(currentYear, currentMonth);
+      });
+
+      renderMonth(currentYear, currentMonth);
+    })();
+  </script>
+)}

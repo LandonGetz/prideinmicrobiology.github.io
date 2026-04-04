@@ -1,0 +1,54 @@
+---
+interface Props {
+  categories: { name: string; count: number }[];
+  totalPosts: number;
+}
+
+const { categories, totalPosts } = Astro.props;
+---
+
+<div class="flex flex-wrap justify-center gap-3 mb-8">
+  <button class="category-btn active" data-category="all">
+    All Posts ({totalPosts})
+  </button>
+  {categories.map((cat) => (
+    <button class="category-btn" data-category={cat.name}>
+      {cat.name} ({cat.count})
+    </button>
+  ))}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const blogPosts = document.querySelectorAll('.blog-post');
+
+    categoryBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const selectedCategory = this.getAttribute('data-category');
+
+        // Update active button
+        categoryBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        // Filter posts
+        blogPosts.forEach(post => {
+          const postCategories = post.getAttribute('data-categories') || '';
+
+          if (selectedCategory === 'all' || postCategories.includes(selectedCategory!)) {
+            (post as HTMLElement).style.display = 'block';
+            (post as HTMLElement).style.opacity = '0';
+            setTimeout(() => {
+              (post as HTMLElement).style.opacity = '1';
+            }, 50);
+          } else {
+            (post as HTMLElement).style.opacity = '0';
+            setTimeout(() => {
+              (post as HTMLElement).style.display = 'none';
+            }, 300);
+          }
+        });
+      });
+    });
+  });
+</script>
