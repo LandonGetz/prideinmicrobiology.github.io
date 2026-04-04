@@ -63,10 +63,8 @@ const configured = !!(import.meta.env.GOOGLE_CALENDAR_API_KEY && import.meta.env
                           <p class="font-heading font-semibold text-gray-900 dark:text-white text-sm truncate">
                             {event.title}
                           </p>
-                          <p class="text-xs text-gray-500 dark:text-gray-400">
-                            {isAllDay
-                              ? 'All day'
-                              : date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                          <p class="text-xs text-gray-500 dark:text-gray-400 event-time" data-start={event.start} data-allday={isAllDay ? 'true' : 'false'}>
+                            {isAllDay ? 'All day' : ''}
                           </p>
                           {event.location && (
                             <p class="text-xs text-gray-400 dark:text-gray-500 truncate">
@@ -112,10 +110,8 @@ const configured = !!(import.meta.env.GOOGLE_CALENDAR_API_KEY && import.meta.env
                           <p class="font-heading font-semibold text-gray-900 dark:text-white text-sm truncate">
                             {event.title || 'Coffee Hour'}
                           </p>
-                          <p class="text-xs text-gray-500 dark:text-gray-400">
-                            {isAllDay
-                              ? 'All day'
-                              : date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                          <p class="text-xs text-gray-500 dark:text-gray-400 event-time" data-start={event.start} data-allday={isAllDay ? 'true' : 'false'}>
+                            {isAllDay ? 'All day' : ''}
                           </p>
                           {event.location && (
                             <p class="text-xs text-gray-400 dark:text-gray-500 truncate">
@@ -196,6 +192,18 @@ const configured = !!(import.meta.env.GOOGLE_CALENDAR_API_KEY && import.meta.env
     )}
   </div>
 </section>
+
+<script is:inline>
+  document.querySelectorAll('.event-time').forEach(function (el) {
+    if (el.dataset.allday === 'true') return;
+    var start = el.dataset.start;
+    if (!start) return;
+    el.textContent = new Date(start).toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+    });
+  });
+</script>
 
 {configured && (
   <script is:inline define:vars={{ events: upcomingEvents }}>
